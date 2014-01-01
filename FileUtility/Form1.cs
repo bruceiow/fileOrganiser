@@ -102,11 +102,7 @@ namespace FileUtility
                         catch
                         {
                         }
-                        lblResult.Text = "processed";
-                        lblResult.Refresh();
-                       
                     }
-
                     lblResult.Text = "Files Processed:" + fileCount + " Exceptions:" + exceptionCount;
                     button1.Enabled = true;
                 }
