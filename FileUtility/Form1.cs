@@ -13,10 +13,10 @@ using System.Globalization;
 
 namespace FileUtility
 {
-
-
     public partial class Form1 : Form
     {
+        #region datatypes
+        string directory;
         string acceptedFileTypes;
         string sdate;
         string secondhalf;
@@ -29,13 +29,14 @@ namespace FileUtility
         bool exist;
         int fileCount = 0;
         int exceptionCount = 0;
+        int incrimentCounter;
         DateTime dtaken;
         string outputsuffix;
+        #endregion
         public Form1()
         {
             InitializeComponent();
-        }
-        int incrimentCounter;
+        }  
         private void button1_Click(object sender, EventArgs e)
         {
             fileCount = 0;
@@ -43,11 +44,9 @@ namespace FileUtility
             GatherSelectedFileTypes();
             button1.Enabled = false;
             lblResult.Text = "Working...Please Wait";
-            string directory = directorySelection.Text;
+            directory = directorySelection.Text;
             try
             {
-
-
                 var filesInDir = Directory.EnumerateFiles(directory,"*", SearchOption.AllDirectories).Where(s => acceptedFileTypes.Contains(Path.GetExtension(s).ToLower()));
                 int countFiles = filesInDir.Count();
                 if (countFiles >0)
@@ -57,58 +56,7 @@ namespace FileUtility
                     {
                         outputDirectory.Text = outputDirectory.Text + @"\";
                     }
-
-                    foreach (string file in filesInDir)
-                    {                       
-                        fileCount++;
-                        lblResult.Text = "Currently Processing: " + fileCount.ToString() + " of " +countFiles;
-                        lblResult.Refresh();
-
-                        Image myImage = Image.FromFile(file);
-                        try
-                        {
-                           if (myImage.PropertyIdList.Any(x => x == 36867))
-                           {
-                               PropertyItem propItem = myImage.GetPropertyItem(36867);
-                               sdate = Encoding.UTF8.GetString(propItem.Value).Trim();
-                           }
-                           else
-                           {  
-                               sdate = File.GetCreationTime(file).ToString();
-                           }
-                            myImage.Dispose();
-                            secondhalf = sdate.Substring(sdate.IndexOf(" "), (sdate.Length - sdate.IndexOf(" ")));
-                            firsthalf = sdate.Substring(0, 10);
-                            firsthalf = firsthalf.Replace(":", "-");
-                            sdate = firsthalf + secondhalf;
-                            dtaken = DateTime.Parse(sdate);
-                            takenMonth = dtaken.ToString("MMM", CultureInfo.InvariantCulture);
-                            takenYear = dtaken.Year.ToString();
-                            takenFolder = takenMonth + " " + takenYear;
-                            outputsuffix = Path.GetExtension(file);
-                            newFileSerialised = dtaken.ToString().Replace(@"/", "").Replace(":", "").Replace(" ", "") + outputsuffix;
-                            outputResult = outputDirectory.Text + takenFolder + @"\" + newFileSerialised;
-                            if (Directory.Exists(outputDirectory.Text + takenFolder))
-                            {
-                                exist = File.Exists(outputResult);
-
-                                if (exist)
-                                {
-                                    outputResult = incrimentCount(outputDirectory.Text + @"/" + takenFolder, newFileSerialised, outputResult, 0);
-                                }
-
-                                File.Copy(file, outputResult);
-                            }
-                            else
-                            {
-                                Directory.CreateDirectory(outputDirectory.Text + takenFolder);
-                                File.Copy(file, outputResult);
-                            }
-                        }
-                        catch
-                        {
-                        }
-                    }
+                    LoopFilesAndCopy(filesInDir, countFiles);
                     lblResult.Text = "Files Processed:" + fileCount + " Exceptions:" + exceptionCount;
                     button1.Enabled = true;
                 }
@@ -123,7 +71,64 @@ namespace FileUtility
                 button1.Enabled = true;
             }
         }
+        private void LoopFilesAndCopy(IEnumerable<string> filesInDir, int countFiles)
+        {
+            foreach (string file in filesInDir)
+            {
+                fileCount++;
+                lblResult.Text = "Currently Processing: " + fileCount.ToString() + " of " + countFiles;
+                lblResult.Refresh();
 
+                Image myImage = Image.FromFile(file);
+                try
+                {
+                    if (myImage.PropertyIdList.Any(x => x == 36867))
+                    {
+                        PropertyItem propItem = myImage.GetPropertyItem(36867);
+                        sdate = Encoding.UTF8.GetString(propItem.Value).Trim();
+                    }
+                    else
+                    {
+                        sdate = File.GetCreationTime(file).ToString();
+                    }
+                    myImage.Dispose();
+                    CalculateFolderName();
+                    outputsuffix = Path.GetExtension(file);
+                    newFileSerialised = dtaken.ToString().Replace(@"/", "").Replace(":", "").Replace(" ", "") + outputsuffix;
+                    outputResult = outputDirectory.Text + takenFolder + @"\" + newFileSerialised;
+                    if (Directory.Exists(outputDirectory.Text + takenFolder))
+                    {
+                        exist = File.Exists(outputResult);
+
+                        if (exist)
+                        {
+                            outputResult = incrimentCount(outputDirectory.Text + @"/" + takenFolder, newFileSerialised, outputResult, 0);
+                        }
+
+                        File.Copy(file, outputResult);
+                    }
+                    else
+                    {
+                        Directory.CreateDirectory(outputDirectory.Text + takenFolder);
+                        File.Copy(file, outputResult);
+                    }
+                }
+                catch
+                {
+                }
+            }
+        }
+        private void CalculateFolderName()
+        {
+            secondhalf = sdate.Substring(sdate.IndexOf(" "), (sdate.Length - sdate.IndexOf(" ")));
+            firsthalf = sdate.Substring(0, 10);
+            firsthalf = firsthalf.Replace(":", "-");
+            sdate = firsthalf + secondhalf;
+            dtaken = DateTime.Parse(sdate);
+            takenMonth = dtaken.ToString("MMM", CultureInfo.InvariantCulture);
+            takenYear = dtaken.Year.ToString();
+            takenFolder = takenMonth + " " + takenYear;
+        }
         private void GatherSelectedFileTypes()
         {
             acceptedFileTypes = null;
