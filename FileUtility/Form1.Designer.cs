@@ -39,12 +39,14 @@
             this.btnSourceSearch = new System.Windows.Forms.Button();
             this.btnDestSearch = new System.Windows.Forms.Button();
             this.lblException = new System.Windows.Forms.Label();
+            this.chkFileTypes = new System.Windows.Forms.CheckedListBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(16, 124);
+            this.button1.Location = new System.Drawing.Point(16, 283);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(100, 23);
             this.button1.TabIndex = 0;
@@ -75,7 +77,7 @@
             // 
             this.lblResult.AutoSize = true;
             this.lblResult.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblResult.Location = new System.Drawing.Point(13, 168);
+            this.lblResult.Location = new System.Drawing.Point(13, 327);
             this.lblResult.Name = "lblResult";
             this.lblResult.Size = new System.Drawing.Size(39, 13);
             this.lblResult.TabIndex = 3;
@@ -138,17 +140,39 @@
             // 
             this.lblException.AutoSize = true;
             this.lblException.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblException.Location = new System.Drawing.Point(13, 191);
+            this.lblException.Location = new System.Drawing.Point(13, 350);
             this.lblException.Name = "lblException";
             this.lblException.Size = new System.Drawing.Size(59, 13);
             this.lblException.TabIndex = 11;
             this.lblException.Text = "exceptions";
             // 
+            // chkFileTypes
+            // 
+            this.chkFileTypes.CheckOnClick = true;
+            this.chkFileTypes.FormattingEnabled = true;
+            this.chkFileTypes.Location = new System.Drawing.Point(16, 143);
+            this.chkFileTypes.Name = "chkFileTypes";
+            this.chkFileTypes.Size = new System.Drawing.Size(241, 124);
+            this.chkFileTypes.Sorted = true;
+            this.chkFileTypes.TabIndex = 13;
+            this.chkFileTypes.ThreeDCheckBoxes = true;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(16, 124);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(99, 13);
+            this.label4.TabIndex = 14;
+            this.label4.Text = "Included File Types";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(397, 222);
+            this.ClientSize = new System.Drawing.Size(560, 402);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.chkFileTypes);
             this.Controls.Add(this.lblException);
             this.Controls.Add(this.btnDestSearch);
             this.Controls.Add(this.btnSourceSearch);
@@ -180,6 +204,8 @@
         private System.Windows.Forms.Button btnSourceSearch;
         private System.Windows.Forms.Button btnDestSearch;
         private System.Windows.Forms.Label lblException;
+        private System.Windows.Forms.CheckedListBox chkFileTypes;
+        private System.Windows.Forms.Label label4;
     }
 }
 

@@ -13,8 +13,11 @@ using System.Globalization;
 
 namespace FileUtility
 {
+
+
     public partial class Form1 : Form
     {
+        string acceptedFileTypes;
         string sdate;
         string secondhalf;
         string firsthalf;
@@ -35,14 +38,17 @@ namespace FileUtility
         int incrimentCounter;
         private void button1_Click(object sender, EventArgs e)
         {
+            fileCount = 0;
+            exceptionCount = 0;
+            GatherSelectedFileTypes();
             button1.Enabled = false;
             lblResult.Text = "Working...Please Wait";
             string directory = directorySelection.Text;
             try
             {
-                string supportedExtensions = "*.jpg,*.gif,*.png,*.bmp,*.jpe,*.jpeg,*.wmf,*.emf,*.xbm,*.ico,*.eps,*.tif,*.tiff";
 
-                var filesInDir = Directory.EnumerateFiles(directory,"*", SearchOption.AllDirectories).Where(s => supportedExtensions.Contains(Path.GetExtension(s).ToLower()));
+
+                var filesInDir = Directory.EnumerateFiles(directory,"*", SearchOption.AllDirectories).Where(s => acceptedFileTypes.Contains(Path.GetExtension(s).ToLower()));
                 int countFiles = filesInDir.Count();
                 if (countFiles >0)
                 {
@@ -118,6 +124,14 @@ namespace FileUtility
             }
         }
 
+        private void GatherSelectedFileTypes()
+        {
+            acceptedFileTypes = null;
+            foreach (var item in chkFileTypes.CheckedItems.OfType<FileTypesIncluded>())
+            {
+                acceptedFileTypes = acceptedFileTypes + item.Value.ToString() + ",";
+            }
+        }
         /// <summary>
         /// Call this to iterate through the file in directories
         /// </summary>
@@ -137,7 +151,6 @@ namespace FileUtility
             }
             return outputResult;
         }
-
         private void directorySelection_Click(object sender, EventArgs e)
         {
             DialogResult result = dlgSourceBrowser.ShowDialog();
@@ -147,7 +160,6 @@ namespace FileUtility
 
             }
         }
-
         private void btnDestSearch_Click(object sender, EventArgs e)
         {
             DialogResult result = dlgSourceBrowser.ShowDialog();
@@ -158,11 +170,50 @@ namespace FileUtility
             }
 
         }
-
         private void Form1_Load(object sender, EventArgs e)
         {
+            List<FileTypesIncluded> list = SetupFileList();
+            BindCheckGrid(list);
+            SetupFileTypeSelection();
             lblException.Text = "";
             lblResult.Text = "";
+        }
+        private void BindCheckGrid(List<FileTypesIncluded> list)
+        {
+            chkFileTypes.DataSource = list;
+            ((ListBox)this.chkFileTypes).DataSource = list;
+            ((ListBox)this.chkFileTypes).DisplayMember = "Text";
+            ((ListBox)this.chkFileTypes).ValueMember = "Value";
+        }
+        private void SetupFileTypeSelection()
+        {
+            chkFileTypes.Visible = false;
+            for (int x = 0; x < chkFileTypes.Items.Count; x++)
+            {
+                chkFileTypes.SetItemChecked(x, true);
+            }
+            chkFileTypes.Visible = true;
+        }
+        private List<FileTypesIncluded> SetupFileList()
+        {
+            var listCollection = new List<FileTypesIncluded>();
+            listCollection.Add(new FileTypesIncluded { Text = "JPG", Value = "*.jpg" });
+            listCollection.Add(new FileTypesIncluded { Text = "PNG", Value = "*.png" });
+            listCollection.Add(new FileTypesIncluded { Text = "GIF", Value = "*.gif" });
+            listCollection.Add(new FileTypesIncluded { Text = "BMP", Value = "*.bmp" });
+            listCollection.Add(new FileTypesIncluded { Text = "AVI", Value = "*.avi" });
+            listCollection.Add(new FileTypesIncluded { Text = "MPEG", Value = "*.mpg" });
+            listCollection.Add(new FileTypesIncluded { Text = "MP4", Value = "*.mp4" });
+            listCollection.Add(new FileTypesIncluded { Text = "TIFF", Value = "*.tiff" });
+            listCollection.Add(new FileTypesIncluded { Text = "PSD", Value = "*.psd" });
+            listCollection.Add(new FileTypesIncluded { Text = "JPEG", Value = "*.jpeg" });
+            listCollection.Add(new FileTypesIncluded { Text = "TIF", Value = "*.tif" });
+            return listCollection;
+        }
+        public class FileTypesIncluded
+        {
+           public string Text { get; set; }
+           public object Value { get; set; }
         }
     }
 }
