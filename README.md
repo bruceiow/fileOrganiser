@@ -23,7 +23,7 @@ append _n where n is next available sequence.
 User Input
 ==========
 
-Gui prompting for source and destination directories
+Gui prompting for source and destination directories. Selection criteria available for filetype filtering
 
 Constaints
 ==========
