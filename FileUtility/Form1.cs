@@ -30,7 +30,6 @@ namespace FileUtility
         string newFileSerialised;
         string outputResult;
         bool exist;
-        int progressPercentage;
         int fileCount = 0;
         int exceptionCount = 0;
         int incrimentCounter;
