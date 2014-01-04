@@ -41,6 +41,8 @@
             this.lblException = new System.Windows.Forms.Label();
             this.chkFileTypes = new System.Windows.Forms.CheckedListBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.btnCancel = new System.Windows.Forms.Button();
+            this.progressBar = new System.Windows.Forms.ProgressBar();
             this.SuspendLayout();
             // 
             // button1
@@ -77,7 +79,7 @@
             // 
             this.lblResult.AutoSize = true;
             this.lblResult.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblResult.Location = new System.Drawing.Point(13, 327);
+            this.lblResult.Location = new System.Drawing.Point(13, 319);
             this.lblResult.Name = "lblResult";
             this.lblResult.Size = new System.Drawing.Size(39, 13);
             this.lblResult.TabIndex = 3;
@@ -140,7 +142,7 @@
             // 
             this.lblException.AutoSize = true;
             this.lblException.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblException.Location = new System.Drawing.Point(13, 350);
+            this.lblException.Location = new System.Drawing.Point(13, 341);
             this.lblException.Name = "lblException";
             this.lblException.Size = new System.Drawing.Size(59, 13);
             this.lblException.TabIndex = 11;
@@ -166,11 +168,31 @@
             this.label4.TabIndex = 14;
             this.label4.Text = "Included File Types";
             // 
+            // btnCancel
+            // 
+            this.btnCancel.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCancel.Location = new System.Drawing.Point(126, 283);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(100, 23);
+            this.btnCancel.TabIndex = 15;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Visible = false;
+            // 
+            // progressBar
+            // 
+            this.progressBar.Location = new System.Drawing.Point(16, 366);
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Size = new System.Drawing.Size(357, 24);
+            this.progressBar.TabIndex = 16;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(560, 402);
+            this.ClientSize = new System.Drawing.Size(393, 402);
+            this.Controls.Add(this.progressBar);
+            this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.chkFileTypes);
             this.Controls.Add(this.lblException);
@@ -206,6 +228,8 @@
         private System.Windows.Forms.Label lblException;
         private System.Windows.Forms.CheckedListBox chkFileTypes;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.ProgressBar progressBar;
     }
 }
 

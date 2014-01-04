@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
@@ -15,7 +16,9 @@ namespace FileUtility
 {
     public partial class Form1 : Form
     {
+     
         #region datatypes
+        BackgroundWorker fileWorker;
         string directory;
         string acceptedFileTypes;
         string sdate;
@@ -27,6 +30,7 @@ namespace FileUtility
         string newFileSerialised;
         string outputResult;
         bool exist;
+        int progressPercentage;
         int fileCount = 0;
         int exceptionCount = 0;
         int incrimentCounter;
@@ -36,54 +40,98 @@ namespace FileUtility
         public Form1()
         {
             InitializeComponent();
-        }  
-        private void button1_Click(object sender, EventArgs e)
+            fileWorker = new BackgroundWorker();
+            fileWorker.DoWork += new DoWorkEventHandler(fileWorker_DoWork);
+            fileWorker.ProgressChanged += new ProgressChangedEventHandler(fileWorker_ProgressChanged);
+            fileWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(fileWorker_RunWorkerCompleted);
+            fileWorker.WorkerReportsProgress = true;
+            fileWorker.WorkerSupportsCancellation = true;
+
+        }
+        void fileWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+             if (e.Cancelled)
+             {
+                 lblResult.Text = "Cancelled";
+             }
+
+             if (e.Error != null)
+             {
+                 lblException.Text = e.Error.InnerException.ToString();
+             }
+             else
+             {
+                 lblResult.Text = "Complete...";
+             }
+             button1.Enabled = true;
+             btnCancel.Visible = false;
+        }
+        void fileWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            progressBar.Value = e.ProgressPercentage;
+            lblResult.Text = "Processing...." + progressBar.Value.ToString() + "%";
+        }
+        void fileWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            if(fileWorker.CancellationPending)
+            {
+                e.Cancel = true; ;
+                fileWorker.ReportProgress(0);
+                return;
+            }
+
+
             try
             {
+                fileCount = 0;
+                exceptionCount = 0;
+                GatherSelectedFileTypes();
+                directory = directorySelection.Text;
+                var filesInDir = Directory.EnumerateFiles(directory, "*", SearchOption.AllDirectories).Where(s => acceptedFileTypes.Contains(Path.GetExtension(s).ToLower()));
 
-            fileCount = 0;
-            exceptionCount = 0;
-            GatherSelectedFileTypes();
-            button1.Enabled = false;
-            lblResult.Text = "Working...Please Wait";
-            directory = directorySelection.Text;
-
-                var filesInDir = Directory.EnumerateFiles(directory,"*", SearchOption.AllDirectories).Where(s => acceptedFileTypes.Contains(Path.GetExtension(s).ToLower()));
-                   
                 int countFiles = filesInDir.Count();
-                if (countFiles >0)
+                if (countFiles > 0)
                 {
-                    string outputcheck = outputDirectory.Text.Substring(outputDirectory.Text.Length-1,1);
+                    string formattedDirecotry;
+                    string outputcheck = outputDirectory.Text.Substring(outputDirectory.Text.Length - 1, 1);
                     if (outputcheck != @"\")
                     {
-                        outputDirectory.Text = outputDirectory.Text + @"\";
+                        formattedDirecotry = outputDirectory.Text + @"\";
                     }
-                    LoopFilesAndCopy(filesInDir, countFiles);
-                    lblResult.Text = "Files Processed:" + fileCount + " Exceptions:" + exceptionCount;
-                    button1.Enabled = true;
+                    else
+                    {
+                        formattedDirecotry = outputDirectory.Text;
+                    }
+                    LoopFilesAndCopy(filesInDir, countFiles, formattedDirecotry);
+                    fileWorker.ReportProgress(100);
                 }
                 else
                 {
-                    MessageBox.Show("No Files Found");
                 }
+
             }
             catch (Exception ex)
             {
-                lblResult.Text = ex.ToString();
-                button1.Enabled = true;
+                fileWorker.ReportProgress(0);
+
             }
+        }  
+        private void button1_Click(object sender, EventArgs e)
+        {
+            button1.Enabled = false;
+            btnCancel.Enabled = true;
+            fileWorker.RunWorkerAsync();
         }
-        private void LoopFilesAndCopy(IEnumerable<string> filesInDir, int countFiles)
+        private void LoopFilesAndCopy(IEnumerable<string> filesInDir, int countFiles, string formattedDirecotry)
         {
             foreach (string file in filesInDir)
             {
                 string fileTypeFromPath = "*"+ Path.GetExtension(file).ToLower();
                 string fileCheck=  EstablishTypeOfFile(fileTypeFromPath);
-
                 fileCount++;
-                lblResult.Text = "Currently Processing: " + fileCount.ToString() + " of " + countFiles;
-                lblResult.Refresh();             
+                Int32 percent = (fileCount * 100) / countFiles;
+                fileWorker.ReportProgress(percent);
+                   
                 try
                 {
                     if (fileCheck == "image")
@@ -105,30 +153,30 @@ namespace FileUtility
                     CalculateFolderName();
                     outputsuffix = Path.GetExtension(file);
                     newFileSerialised = dtaken.ToString().Replace(@"/", "").Replace(":", "").Replace(" ", "") + outputsuffix;
-                    outputResult = outputDirectory.Text + takenFolder + @"\" + newFileSerialised;
-                    if (Directory.Exists(outputDirectory.Text + takenFolder))
+                    outputResult = formattedDirecotry + takenFolder + @"\" + newFileSerialised;
+                    if (Directory.Exists(formattedDirecotry + takenFolder))
                     {
                         exist = File.Exists(outputResult);
 
                         if (exist)
                         {
-                            outputResult = incrimentCount(outputDirectory.Text + @"/" + takenFolder, newFileSerialised, outputResult, 0);
+                            outputResult = incrimentCount(formattedDirecotry + @"/" + takenFolder, newFileSerialised, outputResult, 0);
                         }
 
                         File.Copy(file, outputResult);
                     }
                     else
                     {
-                        Directory.CreateDirectory(outputDirectory.Text + takenFolder);
+                        Directory.CreateDirectory(formattedDirecotry + takenFolder);
                         File.Copy(file, outputResult);
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
+                    ex.InnerException.ToString();
                 }
             }
         }
-
         private string EstablishTypeOfFile(string fileTypeFromPath)
         {
             var fileType = SetupFileList();
@@ -159,11 +207,6 @@ namespace FileUtility
                 acceptedFileTypes = acceptedFileTypes + item.Value.ToString()  + ",";
             }
         }
-        /// <summary>
-        /// Call this to iterate through the file in directories
-        /// </summary>
-        /// <param name="source">Source Directory</param>
-        /// <param name="destination">Destination Directory</param>
         public string incrimentCount(string outputDirectory, string outputFile, string outputResult, int incriment)
         {
             outputsuffix = Path.GetExtension(outputFile);
