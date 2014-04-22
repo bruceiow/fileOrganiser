@@ -30,9 +30,10 @@ namespace FileUtility
         string newFileSerialised;
         string outputResult;
         bool exist;
+        int folderMode = 0;
         int fileCount = 0;
         int exceptionCount = 0;
-        int incrimentCounter;
+        int incrimentCounter =0;
         DateTime dtaken;
         string outputsuffix;
         #endregion
@@ -79,9 +80,16 @@ namespace FileUtility
                 return;
             }
 
-
             try
             {
+                if(rbFolderDay.Checked)
+                {
+                    folderMode = 1;
+                }
+                if(rbFolderMonth.Checked)
+                {
+                    folderMode=2;
+                }
                 fileCount = 0;
                 exceptionCount = 0;
                 GatherSelectedFileTypes();
@@ -159,9 +167,14 @@ namespace FileUtility
 
                         if (exist)
                         {
-                            outputResult = incrimentCount(formattedDirecotry + @"/" + takenFolder, newFileSerialised, outputResult, 0);
-                        }
+                            if (!Directory.Exists(formattedDirecotry + @"\duplicates"))
+                            {
+                                Directory.CreateDirectory(formattedDirecotry + @"\duplicates");
+                            }
 
+                            outputResult = formattedDirecotry + @"\duplicates\" + Path.GetFileNameWithoutExtension(outputResult) + "_" + incrimentCounter + outputsuffix;
+                            incrimentCounter++;
+                        }
                         File.Copy(file, outputResult);
                     }
                     else
@@ -173,6 +186,7 @@ namespace FileUtility
                 catch (Exception ex)
                 {
                     ex.InnerException.ToString();
+                    lblException.Text = ex.InnerException.ToString();
                 }
             }
         }
@@ -196,7 +210,18 @@ namespace FileUtility
             dtaken = DateTime.Parse(sdate);
             takenMonth = dtaken.ToString("MMM", CultureInfo.InvariantCulture);
             takenYear = dtaken.Year.ToString();
-            takenFolder = takenMonth + " " + takenYear;
+            if (folderMode == 2)
+            {
+                takenFolder = takenMonth + " " + takenYear;
+            }
+            if(folderMode ==1)
+            {
+                takenFolder = dtaken.ToShortDateString().Replace("/","");
+            }
+            else
+            {
+                takenFolder = "images";
+            }
         }
         private void GatherSelectedFileTypes()
         {
@@ -210,11 +235,16 @@ namespace FileUtility
         {
             outputsuffix = Path.GetExtension(outputFile);
             if (File.Exists(outputResult))
-            {        
-                string checkFileNumber = Path.GetFileNameWithoutExtension(outputFile);
-                incrimentCounter = Directory.EnumerateFiles(outputDirectory, "*" + checkFileNumber + "*").Count();
+            {
+           //     string incrimenting = Path.GetFileNameWithoutExtension(outputFile);
+           //     string lastFile = incrimenting.Substring(incrimenting.Length - 1, 1);
+           //     int incrimentValue = int.Parse(lastFile) + 1;
+
+
+   //             string checkFileNumber = Path.GetFileNameWithoutExtension(outputFile);
+     //           incrimentCounter = Directory.EnumerateFiles(outputDirectory + @"\"+ takenFolder, "*"  +  checkFileNumber + "*").Count();
             //    incrimentCounter++;
-                outputResult = outputDirectory+@"\"+ Path.GetFileNameWithoutExtension(outputFile) + "_" + incrimentCounter + outputsuffix;
+                outputResult = outputDirectory + @"\duplicates\" + Path.GetFileNameWithoutExtension(outputFile) + "_" + incriment + outputsuffix;
                 return outputResult;
             }
             return outputResult;
@@ -285,6 +315,11 @@ namespace FileUtility
            public string Text { get; set; }
            public object Value { get; set; }
            public string Type { get; set; }
+        }
+
+        private void directorySelection_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
