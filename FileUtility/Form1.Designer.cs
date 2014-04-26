@@ -44,15 +44,17 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.grpFolderOptions = new System.Windows.Forms.GroupBox();
-            this.rbFolderDay = new System.Windows.Forms.RadioButton();
             this.rbFolderMonth = new System.Windows.Forms.RadioButton();
+            this.rbFolderDay = new System.Windows.Forms.RadioButton();
+            this.pnlProcessControls = new System.Windows.Forms.Panel();
             this.grpFolderOptions.SuspendLayout();
+            this.pnlProcessControls.SuspendLayout();
             this.SuspendLayout();
             // 
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(16, 311);
+            this.button1.Location = new System.Drawing.Point(12, 123);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(100, 23);
             this.button1.TabIndex = 0;
@@ -77,14 +79,13 @@
             this.directorySelection.Name = "directorySelection";
             this.directorySelection.Size = new System.Drawing.Size(100, 21);
             this.directorySelection.TabIndex = 2;
-            this.directorySelection.Text = "D:\\F1 2013";
             this.directorySelection.TextChanged += new System.EventHandler(this.directorySelection_TextChanged);
             // 
             // lblResult
             // 
             this.lblResult.AutoSize = true;
             this.lblResult.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblResult.Location = new System.Drawing.Point(13, 347);
+            this.lblResult.Location = new System.Drawing.Point(9, 158);
             this.lblResult.Name = "lblResult";
             this.lblResult.Size = new System.Drawing.Size(39, 13);
             this.lblResult.TabIndex = 3;
@@ -97,7 +98,6 @@
             this.outputDirectory.Name = "outputDirectory";
             this.outputDirectory.Size = new System.Drawing.Size(100, 21);
             this.outputDirectory.TabIndex = 4;
-            this.outputDirectory.Text = "D:\\F1";
             // 
             // label2
             // 
@@ -147,7 +147,7 @@
             // 
             this.lblException.AutoSize = true;
             this.lblException.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblException.Location = new System.Drawing.Point(13, 369);
+            this.lblException.Location = new System.Drawing.Point(9, 171);
             this.lblException.Name = "lblException";
             this.lblException.Size = new System.Drawing.Size(59, 13);
             this.lblException.TabIndex = 11;
@@ -157,17 +157,18 @@
             // 
             this.chkFileTypes.CheckOnClick = true;
             this.chkFileTypes.FormattingEnabled = true;
-            this.chkFileTypes.Location = new System.Drawing.Point(16, 201);
+            this.chkFileTypes.Location = new System.Drawing.Point(12, 23);
             this.chkFileTypes.Name = "chkFileTypes";
             this.chkFileTypes.Size = new System.Drawing.Size(241, 94);
             this.chkFileTypes.Sorted = true;
             this.chkFileTypes.TabIndex = 13;
             this.chkFileTypes.ThreeDCheckBoxes = true;
+            this.chkFileTypes.Visible = false;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(13, 185);
+            this.label4.Location = new System.Drawing.Point(9, 7);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(99, 13);
             this.label4.TabIndex = 14;
@@ -176,7 +177,7 @@
             // btnCancel
             // 
             this.btnCancel.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCancel.Location = new System.Drawing.Point(126, 311);
+            this.btnCancel.Location = new System.Drawing.Point(118, 123);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(100, 23);
             this.btnCancel.TabIndex = 15;
@@ -186,9 +187,9 @@
             // 
             // progressBar
             // 
-            this.progressBar.Location = new System.Drawing.Point(16, 394);
+            this.progressBar.Location = new System.Drawing.Point(3, 190);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(357, 24);
+            this.progressBar.Size = new System.Drawing.Size(316, 24);
             this.progressBar.TabIndex = 16;
             // 
             // grpFolderOptions
@@ -202,6 +203,17 @@
             this.grpFolderOptions.TabStop = false;
             this.grpFolderOptions.Text = "Output Folders";
             // 
+            // rbFolderMonth
+            // 
+            this.rbFolderMonth.AutoSize = true;
+            this.rbFolderMonth.Location = new System.Drawing.Point(12, 42);
+            this.rbFolderMonth.Name = "rbFolderMonth";
+            this.rbFolderMonth.Size = new System.Drawing.Size(109, 17);
+            this.rbFolderMonth.TabIndex = 1;
+            this.rbFolderMonth.TabStop = true;
+            this.rbFolderMonth.Text = "Folders per month";
+            this.rbFolderMonth.UseVisualStyleBackColor = true;
+            // 
             // rbFolderDay
             // 
             this.rbFolderDay.AutoSize = true;
@@ -214,42 +226,42 @@
             this.rbFolderDay.Text = "Folders per day";
             this.rbFolderDay.UseVisualStyleBackColor = true;
             // 
-            // rbFolderMonth
+            // pnlProcessControls
             // 
-            this.rbFolderMonth.AutoSize = true;
-            this.rbFolderMonth.Location = new System.Drawing.Point(12, 42);
-            this.rbFolderMonth.Name = "rbFolderMonth";
-            this.rbFolderMonth.Size = new System.Drawing.Size(109, 17);
-            this.rbFolderMonth.TabIndex = 1;
-            this.rbFolderMonth.TabStop = true;
-            this.rbFolderMonth.Text = "Folders per month";
-            this.rbFolderMonth.UseVisualStyleBackColor = true;
+            this.pnlProcessControls.Controls.Add(this.chkFileTypes);
+            this.pnlProcessControls.Controls.Add(this.label4);
+            this.pnlProcessControls.Controls.Add(this.lblException);
+            this.pnlProcessControls.Controls.Add(this.progressBar);
+            this.pnlProcessControls.Controls.Add(this.button1);
+            this.pnlProcessControls.Controls.Add(this.btnCancel);
+            this.pnlProcessControls.Controls.Add(this.lblResult);
+            this.pnlProcessControls.Location = new System.Drawing.Point(19, 190);
+            this.pnlProcessControls.Name = "pnlProcessControls";
+            this.pnlProcessControls.Size = new System.Drawing.Size(322, 221);
+            this.pnlProcessControls.TabIndex = 18;
+            this.pnlProcessControls.Visible = false;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(393, 423);
+            this.ClientSize = new System.Drawing.Size(384, 420);
+            this.Controls.Add(this.pnlProcessControls);
             this.Controls.Add(this.grpFolderOptions);
-            this.Controls.Add(this.progressBar);
-            this.Controls.Add(this.btnCancel);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.chkFileTypes);
-            this.Controls.Add(this.lblException);
             this.Controls.Add(this.btnDestSearch);
             this.Controls.Add(this.btnSourceSearch);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.outputDirectory);
-            this.Controls.Add(this.lblResult);
             this.Controls.Add(this.directorySelection);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.button1);
             this.Name = "Form1";
             this.Text = "File Organiser";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.grpFolderOptions.ResumeLayout(false);
             this.grpFolderOptions.PerformLayout();
+            this.pnlProcessControls.ResumeLayout(false);
+            this.pnlProcessControls.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -275,6 +287,7 @@
         private System.Windows.Forms.GroupBox grpFolderOptions;
         private System.Windows.Forms.RadioButton rbFolderMonth;
         private System.Windows.Forms.RadioButton rbFolderDay;
+        private System.Windows.Forms.Panel pnlProcessControls;
     }
 }
 

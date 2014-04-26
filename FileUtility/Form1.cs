@@ -134,11 +134,14 @@ namespace FileUtility
             foreach (string file in filesInDir)
             {
                 string fileTypeFromPath = "*"+ Path.GetExtension(file).ToLower();
-                string fileCheck=  EstablishTypeOfFile(fileTypeFromPath);
+                string fileCheck = "";
+                if ((fileTypeFromPath == "*.jpg") || (fileTypeFromPath == "*.gif") || (fileTypeFromPath == "*.jpeg") || (fileTypeFromPath == "*.tiff"))
+                {
+                    fileCheck = "image"; 
+                }
                 fileCount++;
                 Int32 percent = (fileCount * 100) / countFiles;
-                fileWorker.ReportProgress(percent);
-                   
+                fileWorker.ReportProgress(percent);                  
                 try
                 {
                     if (fileCheck == "image")
@@ -236,14 +239,6 @@ namespace FileUtility
             outputsuffix = Path.GetExtension(outputFile);
             if (File.Exists(outputResult))
             {
-           //     string incrimenting = Path.GetFileNameWithoutExtension(outputFile);
-           //     string lastFile = incrimenting.Substring(incrimenting.Length - 1, 1);
-           //     int incrimentValue = int.Parse(lastFile) + 1;
-
-
-   //             string checkFileNumber = Path.GetFileNameWithoutExtension(outputFile);
-     //           incrimentCounter = Directory.EnumerateFiles(outputDirectory + @"\"+ takenFolder, "*"  +  checkFileNumber + "*").Count();
-            //    incrimentCounter++;
                 outputResult = outputDirectory + @"\duplicates\" + Path.GetFileNameWithoutExtension(outputFile) + "_" + incriment + outputsuffix;
                 return outputResult;
             }
@@ -255,8 +250,46 @@ namespace FileUtility
             if (result == DialogResult.OK)
             {
                 directorySelection.Text = dlgSourceBrowser.SelectedPath;
+                try
+                {
+                    List<FileTypesIncluded> fileType = new List<FileTypesIncluded>();
+                    Stack<DirectoryInfo> dirstack = new Stack<DirectoryInfo>();
+                    dirstack.Push(new DirectoryInfo(dlgSourceBrowser.SelectedPath));
+                    while (dirstack.Count > 0)
+                    {
+                        DirectoryInfo current = dirstack.Pop();
+                        foreach (DirectoryInfo d in current.GetDirectories())
+                        {
+                            if ((d.Attributes & FileAttributes.System) != FileAttributes.System)
+                            {
+                                dirstack.Push(d);
+                            }
+                        }
 
-            }
+                        foreach (FileInfo f in current.GetFiles())
+                        {
+                            string fileTypeFromPath = "*" + f.Extension.ToLower();
+                            int checkTypeInList = fileType.Where(i => i.Type == fileTypeFromPath).Count();
+                            if (checkTypeInList == 0)
+                            {
+                                fileType.Add(new FileTypesIncluded { Type = fileTypeFromPath, Text = fileTypeFromPath.Replace("*.", "").ToUpper(), Value = fileTypeFromPath });
+                            }
+
+                            pnlProcessControls.Visible = true;
+                            this.Height = 461;
+                        }
+                    }
+
+                    chkFileTypes.DataSource = fileType;
+                    ((ListBox)this.chkFileTypes).DataSource = chkFileTypes.DataSource = fileType;
+                    ((ListBox)this.chkFileTypes).DisplayMember = "Text";
+                    ((ListBox)this.chkFileTypes).ValueMember = "Value";
+                    SetupFileTypeSelection();
+                }
+                catch (UnauthorizedAccessException)
+                {
+                }
+                }
         }
         private void btnDestSearch_Click(object sender, EventArgs e)
         {
@@ -270,6 +303,7 @@ namespace FileUtility
         }
         private void Form1_Load(object sender, EventArgs e)
         {
+            this.Height = 250;
             List<FileTypesIncluded> list = SetupFileList();
             BindCheckGrid(list);
             SetupFileTypeSelection();
@@ -278,11 +312,6 @@ namespace FileUtility
         }
         private void BindCheckGrid(List<FileTypesIncluded> list)
         {
-            chkFileTypes.DataSource = list;
-            ((ListBox)this.chkFileTypes).DataSource = list;
-            ((ListBox)this.chkFileTypes).DisplayMember = "Text";
-            ((ListBox)this.chkFileTypes).ValueMember = "Value";
-
 
         }
         private void SetupFileTypeSelection()
@@ -297,17 +326,10 @@ namespace FileUtility
         private List<FileTypesIncluded> SetupFileList()
         {
             var listCollection = new List<FileTypesIncluded>();
-            listCollection.Add(new FileTypesIncluded { Text = "JPG", Value = "*.jpg", Type="image" });
-            listCollection.Add(new FileTypesIncluded { Text = "PNG", Value = "*.png", Type="image" });
-            listCollection.Add(new FileTypesIncluded { Text = "GIF", Value = "*.gif", Type="image"});
-            listCollection.Add(new FileTypesIncluded { Text = "BMP", Value = "*.bmp", Type = "image" });
-            listCollection.Add(new FileTypesIncluded { Text = "AVI", Value = "*.avi", Type = "video" });
-            listCollection.Add(new FileTypesIncluded { Text = "MPEG", Value = "*.mpg", Type = "video" });
-            listCollection.Add(new FileTypesIncluded { Text = "MP4", Value = "*.mp4", Type = "video" });
-            listCollection.Add(new FileTypesIncluded { Text = "TIFF", Value = "*.tiff", Type = "image" });
-            listCollection.Add(new FileTypesIncluded { Text = "PSD", Value = "*.psd", Type = "image" });
-            listCollection.Add(new FileTypesIncluded { Text = "JPEG", Value = "*.jpeg", Type = "image" });
-            listCollection.Add(new FileTypesIncluded { Text = "TIF", Value = "*.tif", Type = "image" });
+            foreach (var item in chkFileTypes.CheckedItems.OfType<FileTypesIncluded>())
+            {
+                listCollection.Add(new FileTypesIncluded { Text = item.Text, Type = item.Type, Value = item.Value });
+            }            
             return listCollection;
         }
         public class FileTypesIncluded
