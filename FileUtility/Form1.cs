@@ -258,10 +258,7 @@ namespace FileUtility
             {
                 takenFolder = dtaken.ToShortDateString().Replace("/","");
             }
-            else
-            {
-                takenFolder = "images";
-            }
+
         }
         private void GatherSelectedFileTypes()
         {
