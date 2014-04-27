@@ -19,6 +19,7 @@ namespace FileUtility
      
         #region datatypes
         BackgroundWorker fileWorker;
+       
         string directory;
         string acceptedFileTypes;
         string sdate;
@@ -30,6 +31,7 @@ namespace FileUtility
         string newFileSerialised;
         string outputResult;
         bool exist;
+        int fileMode = 0;
         int folderMode = 0;
         int fileCount = 0;
         int exceptionCount = 0;
@@ -52,17 +54,23 @@ namespace FileUtility
         {
              if (e.Cancelled)
              {
+                 this.Height = 250;
+                 pnlProcessControls.Visible = false;
                  lblResult.Text = "Cancelled";
              }
 
              if (e.Error != null)
              {
+                 this.Height = 250;
+                 pnlProcessControls.Visible = false;
                  lblException.Text = e.Error.InnerException.ToString();
              }
              else
              {
+                 this.Height = 250;
+                 pnlProcessControls.Visible = false;
                  lblResult.Text = "Complete...";
-             }
+             } 
              button1.Enabled = true;
              btnCancel.Visible = false;
         }
@@ -90,6 +98,15 @@ namespace FileUtility
                 {
                     folderMode=2;
                 }
+                if(rblRenameFiles.Checked)
+                {
+                    fileMode = 1;
+                }
+                if(rblKeepFileNames.Checked)
+                {
+                    fileMode = 2;
+                }
+
                 fileCount = 0;
                 exceptionCount = 0;
                 GatherSelectedFileTypes();
@@ -135,7 +152,7 @@ namespace FileUtility
             {
                 string fileTypeFromPath = "*"+ Path.GetExtension(file).ToLower();
                 string fileCheck = "";
-                if ((fileTypeFromPath == "*.jpg") || (fileTypeFromPath == "*.gif") || (fileTypeFromPath == "*.jpeg") || (fileTypeFromPath == "*.tiff"))
+                if ((fileTypeFromPath == "*.cr2") || (fileTypeFromPath == "*.gif") || (fileTypeFromPath == "*.jpeg") || (fileTypeFromPath == "*.tiff"))
                 {
                     fileCheck = "image"; 
                 }
@@ -162,8 +179,18 @@ namespace FileUtility
                   
                     CalculateFolderName();
                     outputsuffix = Path.GetExtension(file);
-                    newFileSerialised = dtaken.ToString().Replace(@"/", "").Replace(":", "").Replace(" ", "") + outputsuffix;
-                    outputResult = formattedDirecotry + takenFolder + @"\" + newFileSerialised;
+
+                    if (fileMode == 1)
+                    {
+                        newFileSerialised = dtaken.ToString().Replace(@"/", "").Replace(":", "").Replace(" ", "") + outputsuffix;
+                        outputResult = formattedDirecotry + takenFolder + @"\" + newFileSerialised;
+                    }
+                    if (fileMode == 2)
+                    {
+                        newFileSerialised = Path.GetFileName(file);
+                        outputResult = formattedDirecotry + takenFolder + @"\" + newFileSerialised;
+                    }
+
                     if (Directory.Exists(formattedDirecotry + takenFolder))
                     {
                         exist = File.Exists(outputResult);
@@ -175,7 +202,7 @@ namespace FileUtility
                                 Directory.CreateDirectory(formattedDirecotry + @"\duplicates");
                             }
 
-                            outputResult = formattedDirecotry + @"\duplicates\" + Path.GetFileNameWithoutExtension(outputResult) + "_" + incrimentCounter + outputsuffix;
+                            outputResult = formattedDirecotry + @"\duplicates\" + Path.GetFileNameWithoutExtension(outputResult) + "_" + incrimentCounter + outputsuffix;                                                                                
                             incrimentCounter++;
                         }
                         File.Copy(file, outputResult);
@@ -189,9 +216,9 @@ namespace FileUtility
                 catch (Exception ex)
                 {
                     ex.InnerException.ToString();
-                    lblException.Text = ex.InnerException.ToString();
+                    lblException.Text = ex.InnerException.ToString() + " " + ex.Message.ToString(); ;
                 }
-            }
+            }          
         }
         private string EstablishTypeOfFile(string fileTypeFromPath)
         {
@@ -338,7 +365,6 @@ namespace FileUtility
            public object Value { get; set; }
            public string Type { get; set; }
         }
-
         private void directorySelection_TextChanged(object sender, EventArgs e)
         {
 

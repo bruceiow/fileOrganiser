@@ -47,8 +47,12 @@
             this.rbFolderMonth = new System.Windows.Forms.RadioButton();
             this.rbFolderDay = new System.Windows.Forms.RadioButton();
             this.pnlProcessControls = new System.Windows.Forms.Panel();
+            this.grpFileNaming = new System.Windows.Forms.GroupBox();
+            this.rblKeepFileNames = new System.Windows.Forms.RadioButton();
+            this.rblRenameFiles = new System.Windows.Forms.RadioButton();
             this.grpFolderOptions.SuspendLayout();
             this.pnlProcessControls.SuspendLayout();
+            this.grpFileNaming.SuspendLayout();
             this.SuspendLayout();
             // 
             // button1
@@ -85,7 +89,7 @@
             // 
             this.lblResult.AutoSize = true;
             this.lblResult.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblResult.Location = new System.Drawing.Point(9, 158);
+            this.lblResult.Location = new System.Drawing.Point(18, 179);
             this.lblResult.Name = "lblResult";
             this.lblResult.Size = new System.Drawing.Size(39, 13);
             this.lblResult.TabIndex = 3;
@@ -103,7 +107,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(170, 58);
+            this.label2.Location = new System.Drawing.Point(146, 58);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(209, 13);
             this.label2.TabIndex = 5;
@@ -113,7 +117,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(170, 85);
+            this.label3.Location = new System.Drawing.Point(146, 85);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(203, 13);
             this.label3.TabIndex = 6;
@@ -125,7 +129,7 @@
             // 
             // btnSourceSearch
             // 
-            this.btnSourceSearch.Location = new System.Drawing.Point(126, 53);
+            this.btnSourceSearch.Location = new System.Drawing.Point(121, 53);
             this.btnSourceSearch.Name = "btnSourceSearch";
             this.btnSourceSearch.Size = new System.Drawing.Size(25, 23);
             this.btnSourceSearch.TabIndex = 9;
@@ -135,7 +139,7 @@
             // 
             // btnDestSearch
             // 
-            this.btnDestSearch.Location = new System.Drawing.Point(126, 80);
+            this.btnDestSearch.Location = new System.Drawing.Point(121, 80);
             this.btnDestSearch.Name = "btnDestSearch";
             this.btnDestSearch.Size = new System.Drawing.Size(25, 23);
             this.btnDestSearch.TabIndex = 10;
@@ -147,7 +151,7 @@
             // 
             this.lblException.AutoSize = true;
             this.lblException.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblException.Location = new System.Drawing.Point(9, 171);
+            this.lblException.Location = new System.Drawing.Point(18, 189);
             this.lblException.Name = "lblException";
             this.lblException.Size = new System.Drawing.Size(59, 13);
             this.lblException.TabIndex = 11;
@@ -187,18 +191,19 @@
             // 
             // progressBar
             // 
-            this.progressBar.Location = new System.Drawing.Point(3, 190);
+            this.progressBar.Location = new System.Drawing.Point(2, 152);
             this.progressBar.Name = "progressBar";
             this.progressBar.Size = new System.Drawing.Size(316, 24);
             this.progressBar.TabIndex = 16;
             // 
             // grpFolderOptions
             // 
+            this.grpFolderOptions.BackColor = System.Drawing.SystemColors.Window;
             this.grpFolderOptions.Controls.Add(this.rbFolderMonth);
             this.grpFolderOptions.Controls.Add(this.rbFolderDay);
             this.grpFolderOptions.Location = new System.Drawing.Point(19, 110);
             this.grpFolderOptions.Name = "grpFolderOptions";
-            this.grpFolderOptions.Size = new System.Drawing.Size(238, 72);
+            this.grpFolderOptions.Size = new System.Drawing.Size(132, 72);
             this.grpFolderOptions.TabIndex = 17;
             this.grpFolderOptions.TabStop = false;
             this.grpFolderOptions.Text = "Output Folders";
@@ -230,38 +235,75 @@
             // 
             this.pnlProcessControls.Controls.Add(this.chkFileTypes);
             this.pnlProcessControls.Controls.Add(this.label4);
-            this.pnlProcessControls.Controls.Add(this.lblException);
             this.pnlProcessControls.Controls.Add(this.progressBar);
             this.pnlProcessControls.Controls.Add(this.button1);
             this.pnlProcessControls.Controls.Add(this.btnCancel);
-            this.pnlProcessControls.Controls.Add(this.lblResult);
-            this.pnlProcessControls.Location = new System.Drawing.Point(19, 190);
+            this.pnlProcessControls.Location = new System.Drawing.Point(19, 204);
             this.pnlProcessControls.Name = "pnlProcessControls";
-            this.pnlProcessControls.Size = new System.Drawing.Size(322, 221);
+            this.pnlProcessControls.Size = new System.Drawing.Size(322, 188);
             this.pnlProcessControls.TabIndex = 18;
             this.pnlProcessControls.Visible = false;
+            // 
+            // grpFileNaming
+            // 
+            this.grpFileNaming.Controls.Add(this.rblRenameFiles);
+            this.grpFileNaming.Controls.Add(this.rblKeepFileNames);
+            this.grpFileNaming.Location = new System.Drawing.Point(173, 110);
+            this.grpFileNaming.Name = "grpFileNaming";
+            this.grpFileNaming.Size = new System.Drawing.Size(168, 74);
+            this.grpFileNaming.TabIndex = 19;
+            this.grpFileNaming.TabStop = false;
+            this.grpFileNaming.Text = "File Naming";
+            // 
+            // rblKeepFileNames
+            // 
+            this.rblKeepFileNames.AutoSize = true;
+            this.rblKeepFileNames.Location = new System.Drawing.Point(6, 42);
+            this.rblKeepFileNames.Name = "rblKeepFileNames";
+            this.rblKeepFileNames.Size = new System.Drawing.Size(136, 17);
+            this.rblKeepFileNames.TabIndex = 0;
+            this.rblKeepFileNames.Text = "Keep original file names";
+            this.rblKeepFileNames.UseVisualStyleBackColor = true;
+            // 
+            // rblRenameFiles
+            // 
+            this.rblRenameFiles.AutoSize = true;
+            this.rblRenameFiles.Checked = true;
+            this.rblRenameFiles.Location = new System.Drawing.Point(6, 19);
+            this.rblRenameFiles.Name = "rblRenameFiles";
+            this.rblRenameFiles.Size = new System.Drawing.Size(86, 17);
+            this.rblRenameFiles.TabIndex = 1;
+            this.rblRenameFiles.TabStop = true;
+            this.rblRenameFiles.Text = "Rename files";
+            this.rblRenameFiles.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(384, 420);
+            this.BackColor = System.Drawing.SystemColors.Window;
+            this.ClientSize = new System.Drawing.Size(358, 403);
+            this.Controls.Add(this.grpFileNaming);
             this.Controls.Add(this.pnlProcessControls);
+            this.Controls.Add(this.lblException);
             this.Controls.Add(this.grpFolderOptions);
             this.Controls.Add(this.btnDestSearch);
             this.Controls.Add(this.btnSourceSearch);
             this.Controls.Add(this.label3);
+            this.Controls.Add(this.lblResult);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.outputDirectory);
             this.Controls.Add(this.directorySelection);
             this.Controls.Add(this.label1);
             this.Name = "Form1";
-            this.Text = "File Organiser";
+            this.Text = "iPhoto";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.grpFolderOptions.ResumeLayout(false);
             this.grpFolderOptions.PerformLayout();
             this.pnlProcessControls.ResumeLayout(false);
             this.pnlProcessControls.PerformLayout();
+            this.grpFileNaming.ResumeLayout(false);
+            this.grpFileNaming.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -288,6 +330,9 @@
         private System.Windows.Forms.RadioButton rbFolderMonth;
         private System.Windows.Forms.RadioButton rbFolderDay;
         private System.Windows.Forms.Panel pnlProcessControls;
+        private System.Windows.Forms.GroupBox grpFileNaming;
+        private System.Windows.Forms.RadioButton rblRenameFiles;
+        private System.Windows.Forms.RadioButton rblKeepFileNames;
     }
 }
 
