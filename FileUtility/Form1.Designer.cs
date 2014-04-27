@@ -50,6 +50,7 @@
             this.grpFileNaming = new System.Windows.Forms.GroupBox();
             this.rblKeepFileNames = new System.Windows.Forms.RadioButton();
             this.rblRenameFiles = new System.Windows.Forms.RadioButton();
+            this.lblProgress = new System.Windows.Forms.Label();
             this.grpFolderOptions.SuspendLayout();
             this.pnlProcessControls.SuspendLayout();
             this.grpFileNaming.SuspendLayout();
@@ -89,7 +90,7 @@
             // 
             this.lblResult.AutoSize = true;
             this.lblResult.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblResult.Location = new System.Drawing.Point(18, 179);
+            this.lblResult.Location = new System.Drawing.Point(18, 181);
             this.lblResult.Name = "lblResult";
             this.lblResult.Size = new System.Drawing.Size(39, 13);
             this.lblResult.TabIndex = 3;
@@ -233,6 +234,7 @@
             // 
             // pnlProcessControls
             // 
+            this.pnlProcessControls.Controls.Add(this.lblProgress);
             this.pnlProcessControls.Controls.Add(this.chkFileTypes);
             this.pnlProcessControls.Controls.Add(this.label4);
             this.pnlProcessControls.Controls.Add(this.progressBar);
@@ -240,7 +242,7 @@
             this.pnlProcessControls.Controls.Add(this.btnCancel);
             this.pnlProcessControls.Location = new System.Drawing.Point(19, 204);
             this.pnlProcessControls.Name = "pnlProcessControls";
-            this.pnlProcessControls.Size = new System.Drawing.Size(322, 188);
+            this.pnlProcessControls.Size = new System.Drawing.Size(322, 200);
             this.pnlProcessControls.TabIndex = 18;
             this.pnlProcessControls.Visible = false;
             // 
@@ -277,12 +279,21 @@
             this.rblRenameFiles.Text = "Rename files";
             this.rblRenameFiles.UseVisualStyleBackColor = true;
             // 
+            // lblProgress
+            // 
+            this.lblProgress.AutoSize = true;
+            this.lblProgress.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblProgress.Location = new System.Drawing.Point(3, 177);
+            this.lblProgress.Name = "lblProgress";
+            this.lblProgress.Size = new System.Drawing.Size(0, 13);
+            this.lblProgress.TabIndex = 20;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
-            this.ClientSize = new System.Drawing.Size(358, 403);
+            this.ClientSize = new System.Drawing.Size(358, 416);
             this.Controls.Add(this.grpFileNaming);
             this.Controls.Add(this.pnlProcessControls);
             this.Controls.Add(this.lblException);
@@ -333,6 +344,7 @@
         private System.Windows.Forms.GroupBox grpFileNaming;
         private System.Windows.Forms.RadioButton rblRenameFiles;
         private System.Windows.Forms.RadioButton rblKeepFileNames;
+        private System.Windows.Forms.Label lblProgress;
     }
 }
 

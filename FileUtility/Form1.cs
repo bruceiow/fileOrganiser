@@ -77,7 +77,7 @@ namespace FileUtility
         void fileWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             progressBar.Value = e.ProgressPercentage;
-            lblResult.Text = "Processing...." + progressBar.Value.ToString() + "%";
+            lblProgress.Text = "Processing...." + progressBar.Value.ToString() + "%";
         }
         void fileWorker_DoWork(object sender, DoWorkEventArgs e)
         {
@@ -152,15 +152,25 @@ namespace FileUtility
             {
                 string fileTypeFromPath = "*"+ Path.GetExtension(file).ToLower();
                 string fileCheck = "";
-                if ((fileTypeFromPath == "*.cr2") || (fileTypeFromPath == "*.gif") || (fileTypeFromPath == "*.jpeg") || (fileTypeFromPath == "*.tiff"))
+                if ((fileTypeFromPath == "*.png") || (fileTypeFromPath == "*.gif") || (fileTypeFromPath == "*.bmp") || (fileTypeFromPath == "*.jpeg") || (fileTypeFromPath == "*.tiff"))
                 {
                     fileCheck = "image"; 
+                }
+                if((fileTypeFromPath == "*.cr2"))
+                {
+                    fileCheck = "RAW";
                 }
                 fileCount++;
                 Int32 percent = (fileCount * 100) / countFiles;
                 fileWorker.ReportProgress(percent);                  
                 try
                 {
+                    if(fileCheck == "RAW")
+                    {
+                        sdate = File.GetCreationTime(file).ToString();
+                    }
+
+
                     if (fileCheck == "image")
                     {
                         Image myImage = Image.FromFile(file);
